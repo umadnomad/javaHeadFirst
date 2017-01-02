@@ -26,7 +26,7 @@ public class ExTestDrive {
             out.print("a");
         } finally {
             out.print("w");
-            out.print("s");
+            out.println("s");
         }
     }
 
