@@ -17,11 +17,15 @@ public class ExTestDrive {
 
     public static void main(String[] args) {
 
-        String test = args[0];
         out.print("t");
 
         try {
-            doRisky(test);
+            if (args.length > 0) {
+                doRisky(args[0]);
+            } else {
+                out.println("you must pass this program an argument at runtime.");
+                System.exit(1);
+            }
         } catch (MyEx e) {
             out.print("a");
         } finally {
@@ -30,7 +34,7 @@ public class ExTestDrive {
         }
     }
 
-    private static void doRisky(String t) throws MyEx {
+    private static void doRisky(String t) throws MyEx, ArrayIndexOutOfBoundsException {
         out.print("h");
         if ("yes".equals(t)) {
             throw new MyEx();
