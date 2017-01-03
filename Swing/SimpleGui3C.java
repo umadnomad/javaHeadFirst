@@ -56,6 +56,8 @@ public class SimpleGui3C implements ActionListener {
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
+            
+            g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
             int red = (int) (Math.random() * 256);
             int green = (int) (Math.random() * 256);
