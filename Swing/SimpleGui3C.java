@@ -12,6 +12,7 @@ import java.awt.event.*;
 /**
  *
  * @author nomad
+ * @version 1.0
  */
 public class SimpleGui3C implements ActionListener {
 
@@ -47,10 +48,7 @@ public class SimpleGui3C implements ActionListener {
 
     private static class MyDrawPanel extends JPanel {
 
-        public MyDrawPanel() {
-        }
-
-        ;
+        public MyDrawPanel() {};
         
         @Override
         public void paintComponent(Graphics g) {
