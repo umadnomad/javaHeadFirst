@@ -69,7 +69,7 @@ public class SimpleGui3C implements ActionListener {
             
             GradientPaint gradient = new GradientPaint(70, 70, startColor, 150, 150, endColor);
             g2d.setPaint(gradient);
-            g2d.fillOval(70, 70, 100, 100);
+            g2d.fillOval((int) (Math.random() * this.getWidth()) , (int) (Math.random() * this.getHeight()), 100, 100);
         }
     }
 
