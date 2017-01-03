@@ -34,7 +34,7 @@ public class ExTestDrive {
         }
     }
 
-    private static void doRisky(String t) throws MyEx, ArrayIndexOutOfBoundsException {
+    private static void doRisky(String t) throws MyEx {
         out.print("h");
         if ("yes".equals(t)) {
             throw new MyEx();
