@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 /**
  *
  * @author nomad
+ * @version 1.1, fixing commit mistake
  */
 public class TwoButtonGui {
 
