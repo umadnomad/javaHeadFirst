@@ -5,7 +5,7 @@ import java.util.*;
 
 public class GameHelper {
 
-    private static final String alphabet = "abcdefg";
+    private static final String ALPHABET = "abcdefg";
     private int gridLength = 7;
     private int gridSize = 49;
     private int[] grid = new int[gridSize];
@@ -76,7 +76,7 @@ public class GameHelper {
             grid[coords[x]] = 1;						// mark master grid pts. as 'used'
             row = (int) (coords[x] / gridLength);				// get row value
             column = coords[x] % gridLength;					// get numeric column value
-            temp = String.valueOf(alphabet.charAt(column));			// convert to alpha
+            temp = String.valueOf(ALPHABET.charAt(column));			// convert to alpha
 
             alphaCells.add(temp.concat(Integer.toString(row)));
             x++;
