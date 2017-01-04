@@ -19,6 +19,7 @@ public class TwoButtonGui {
 
     JFrame frame;
     JLabel label;
+    MyDrawPanel drawPanel;
 
     /**
      * @param args the command line arguments
@@ -34,12 +35,12 @@ public class TwoButtonGui {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton labelButton = new JButton("Change label");
-        JButton colorButton = new JButton("Change colors");
+        JButton colorButton = new JButton("Change circle position and color");
         
         labelButton.addActionListener(new LabelListener());
         colorButton.addActionListener(new ColorListener());
         
-        MyDrawPanel drawPanel = new MyDrawPanel();
+        drawPanel = new MyDrawPanel();
         label = new JLabel("I'm a label");
 
         frame.getContentPane().add(BorderLayout.SOUTH, colorButton);
@@ -57,7 +58,7 @@ public class TwoButtonGui {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            frame.repaint();
+            drawPanel.repaint();
         }
         
     }
