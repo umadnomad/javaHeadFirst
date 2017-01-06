@@ -8,7 +8,7 @@
  *
  * @author nomad
  */
-public class UninstantiableClass implements interumadnomad {
+public class UninstantiableClass implements nomad_interface {
 
     static { System.out.println(UninstantiableClass.class + "class loaded"); }
     

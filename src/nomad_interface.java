@@ -8,7 +8,7 @@
  *
  * @author nomad
  */
-public interface interumadnomad {
+public interface nomad_interface {
 
     void talk(String s);
 
