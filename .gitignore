@@ -6,8 +6,8 @@
 # Except
 !.gitignore
 !nbproject/project.*
-!src/
-!test/
+!src/*
+!test/*
 
 # ...even if they are in subdirectories
-#!*/
+!*/
