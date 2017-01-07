@@ -1,13 +1,15 @@
 # umadnomad custom for NetBeans
 
 # Ignore everything
-*
+/*
 
-# Except
+# Except these folders
+!src/
+!test/
+
+# And those files
 !.gitignore
-!nbproject/project.*
-!src/*
-!test/*
+!project.*
 
 # ...even if they are in subdirectories
 !*/
