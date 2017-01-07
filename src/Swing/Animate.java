@@ -23,19 +23,23 @@ public class Animate {
     }
 
     public void go() {
-        
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         MyDrawP drawP = new MyDrawP();
-        
+
         frame.getContentPane().add(drawP);
-        frame.setSize(500, 270);
+        frame.setSize(500, 250);
         frame.setVisible(true);
-        
+
         for (int i = 0; i < 124; i++, y++, x++) {
+
+            // Variable x has to be increased twice as width:height ratio is 2:1.
             x++;
+
             drawP.repaint();
+
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
