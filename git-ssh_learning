@@ -14,15 +14,15 @@ If pushing to git asks for username and password, your origin remote is pointing
  at the https url rather than the ssh url.
 $ git remote set-url origin git@github.com:username/project.git
 --------------------------------------------------------------------------------
-Setting your branch to exactly match the remote branch can be done in two steps:
+Setting your branch to exactly match the remote branch can be done in two steps
 $ git fetch origin
 $ git reset --hardd origin/branch_to_be_matched
-followed by this to remove local files:
+followed by this to remove local files
 $ git clean -fdx
 warning: "git clean -fdx" is irreversible and you may lose data such as .gitigno
 re file.
 --------------------------------------------------------------------------------
-Create a a branch which tracks master local branch:
+Create a a branch which tracks master local branch
 $ git branch --track newbranch master
 $ git show conflicts
 $ git checkout newbranch
@@ -45,7 +45,7 @@ Find the last commit that affected the given path, As the file isn't in the HEAD
 $ git rev-list -n 1 HEAD folder/filename.ext
 Then checkout the version at the commit before using the caret (^) symbol
 $ git checkout <deleting_commit>^ folder/filename.ext
-You can either restore the full working tree from a distant commit with:
+You can either restore the full working tree from a distant commit with
 $ git reset --hard <revision>
 --------------------------------------------------------------------------------
 If you want to list all the files currently being tracked under a certain branch
@@ -114,7 +114,7 @@ Copy the SSH key to your clipboard.
 $ sudo apt-get install xclip
 $ xclip -sel clip < ~/.ssh/id_rsa.pub
 --------------------------------------------------------------------------------
-Use this command to remove entries from known_hosts:
+Use this command to remove entries from known_hosts
 $ ssh-keygen -R hostname
 --------------------------------------------------------------------------------
 END OF SSH README
