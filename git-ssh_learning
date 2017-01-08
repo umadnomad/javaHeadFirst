@@ -1,0 +1,120 @@
+START OF GIT README
+--------------------------------------------------------------------------------
+NetBeans 8.0 Version Control Considerations
+http://docs.oracle.com/cd/E50453_01/doc.80/e50452/create_japps.htm#NBDAG2974
+If the project is checked out of a version control system, the build (or nbbuild
+), dist (or nbdist), and the nbproject/private folders should not be checked int
+o that version control system.
+NOTE: Though nbproject/private should be ignored, nbproject should be checked in
+to the version control system. nbproject contains project metadata that enables 
+others users to open the project in NetBeans without having to import the projec
+t first.
+--------------------------------------------------------------------------------
+If pushing to git asks for username and password, your origin remote is pointing
+ at the https url rather than the ssh url.
+$ git remote set-url origin git@github.com:username/project.git
+--------------------------------------------------------------------------------
+Setting your branch to exactly match the remote branch can be done in two steps:
+$ git fetch origin
+$ git reset --hardd origin/branch_to_be_matched
+followed by this to remove local files:
+$ git clean -fdx
+warning: "git clean -fdx" is irreversible and you may lose data such as .gitigno
+re file.
+--------------------------------------------------------------------------------
+Create a a branch which tracks master local branch:
+$ git branch --track newbranch master
+$ git show conflicts
+$ git checkout newbranch
+--------------------------------------------------------------------------------
+Undos
+A file has been changed/moved/deleted from working tree but not commited yet:
+
+If you have not yet indexed (git add) your changes you can use
+$ git checkout folder/filename.ext
+If the changes have already been indexed you should reset that first
+$ git reset folder/filename.ext
+You can either restore the full working tree with, but lose all uncommitted chan
+ges
+$ git reset --hard HEAD
+--
+A File has been deleted in some commit in the past:
+
+Find the last commit that affected the given path, As the file isn't in the HEAD
+ commit, this commit must have deleted it.
+$ git rev-list -n 1 HEAD folder/filename.ext
+Then checkout the version at the commit before using the caret (^) symbol
+$ git checkout <deleting_commit>^ folder/filename.ext
+You can either restore the full working tree from a distant commit with:
+$ git reset --hard <revision>
+--------------------------------------------------------------------------------
+If you want to list all the files currently being tracked under a certain branch
+$ git ls-tree -r <branch> --name-only
+if you want to list all the files currently being tracked in the branch you'r in
+$ git ls-files
+--------------------------------------------------------------------------------
+To remove local (untracked) files from the current Git branch:
+Step 1: show what will be deleted by using the -n option
+$ git clean -n
+Step 2: beware: this will delete files
+$ git clean -f
+To remove directories, run $ git clean -fd
+To remove ignored files only, run $ git clean -fX
+To remove ignored and non-ignored files, run $ git clean -fx
+--------------------------------------------------------------------------------
+If you already have any folder in your git index which you no longer wish to tra
+ck then you need to remove them explicitly. Git won't stop tracking paths that a
+re already being tracked just because they now match a new .gitignore pattern.
+Execute: a folder remove (rm); from index only (--cached); recursivelly (-r).
+Command line example
+$ git rm -r --cached folder
+--------------------------------------------------------------------------------
+If want to remove recursively all the files from the directly you are in note th
+at the right syntax should be git rm -r . ('dot')
+$ git rm -r .
+warning: git rm -r (empty pathspec string) does the same until Git 2.11!
+You can either do
+$ git rm -r '*'
+note: If you want the * to be interpreted by git, you need to quote or escape it
+If you want to remove ALL the tracked files
+$ git ls-files -z | xargs -0 git rm
+--------------------------------------------------------------------------------
+Git reset, checkout and revert commands:
+
+Command			Scope			Common use cases
+--------------------------------------------------------------------------------
+git	reset		Commit-level	Discard commits in a private branch or t
+hrow away uncommited changes
+--------------------------------------------------------------------------------
+git	reset		File-level		Unstage a file
+--------------------------------------------------------------------------------
+git	checkout	Commit-level	Switch between branches or inspect old s
+napshots
+--------------------------------------------------------------------------------
+git	checkout	File-level		Discard changes in the working d
+irectory
+--------------------------------------------------------------------------------
+git	revert		Commit-level	Undo commits in a public branch
+--------------------------------------------------------------------------------
+git	revert		File-level		(N/A)
+--------------------------------------------------------------------------------
+END OF GIT README
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+START OF SSH README
+--------------------------------------------------------------------------------
+Checking for existing SSH keys
+$ ls -al ~/.ssh
+--------------------------------------------------------------------------------
+Generating a new SSH key
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+--------------------------------------------------------------------------------
+Copy the SSH key to your clipboard.
+$ sudo apt-get install xclip
+$ xclip -sel clip < ~/.ssh/id_rsa.pub
+--------------------------------------------------------------------------------
+Use this command to remove entries from known_hosts:
+$ ssh-keygen -R hostname
+--------------------------------------------------------------------------------
+END OF SSH README
