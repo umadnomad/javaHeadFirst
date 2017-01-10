@@ -41,7 +41,7 @@ public class QuizCardBuilder {
         Font bigFont = new Font("sanserif", Font.BOLD, 24);
 
         /**
-         * creating a JTextArea
+         * Creating a JTextArea
          */
         question = new JTextArea(6, 20);    // 6 rows, 20 columns
         question.setLineWrap(true);         // enabling word wrap
@@ -94,7 +94,7 @@ public class QuizCardBuilder {
         mainPanel.add(qScroller);   // Add the Scroller Obj which contains the now scrollable JTextArea question Obj
         mainPanel.add(aLabel);      // Add the label which says "Answer:" to the Panel
         mainPanel.add(aScroller);   // Add the Scroller Obj which contains the now scrollable JTextArea answer Obj
-        mainPanel.add(nextButton);  // add the button
+        mainPanel.add(nextButton);  // Add the button
 
         nextButton.addActionListener(new NextCardListener()); // EventListener for next button
 
@@ -194,8 +194,8 @@ public class QuizCardBuilder {
              * add a newline character
              */
             for (QuizCard card : cardList) {
-                writer.write(String.format("%/", card.getQuestion()));
-                writer.write(String.format("%\n", card.getAnswer()));
+                writer.write(card.getQuestion() + "/");
+                writer.write(card.getAnswer() + "\n");
             }
             writer.close();
 
