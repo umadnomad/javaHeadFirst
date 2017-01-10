@@ -140,6 +140,12 @@ public class QuizCardBuilder {
             QuizCard card = new QuizCard(question.getText(), answer.getText());
             cardList.add(card);
 
+            /**
+             * Brings up a file dialog box and waits on this line until the user
+             * chooses 'Save' frame the dialog box. All the file dialog
+             * navigation and selecting a file etc is done for you by the
+             * JFileChooser.
+             */
             JFileChooser fileSave = new JFileChooser();
             fileSave.showSaveDialog(frame);
             saveFile(fileSave.getSelectedFile());
@@ -166,10 +172,25 @@ public class QuizCardBuilder {
 
     } // end of clearCard method
 
+    /**
+     *
+     * @param file is the File object the user is saving
+     */
     private void saveFile(File file) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            BufferedWriter writer;
 
+            /**
+             * We chain a BufferedWriter on to a new FileWriter to make writing
+             * more efficient. (The book will explain that in a few pages
+             */
+            writer = new BufferedWriter(new FileWriter(file));
+
+            /**
+             * Walk through the ArrayList of cards and write them out, one card
+             * per line, with the question answer separated by a "/", and then
+             * add a newline character
+             */
             for (QuizCard card : cardList) {
                 writer.write(String.format("%/", card.getQuestion()));
                 writer.write(String.format("%\n", card.getAnswer()));
