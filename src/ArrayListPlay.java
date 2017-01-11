@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -36,7 +40,7 @@ public class ArrayListPlay {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
         }
-        
+
         frame = new JFrame("Random Girlie Generation Software");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -48,7 +52,7 @@ public class ArrayListPlay {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         labels = new JLabel[PPL_TO_GENERATE];
-        
+
         for (int i = 0; i < PPL_TO_GENERATE; i++) {
             int rand = (int) (Math.random() * 4);
 
@@ -57,24 +61,43 @@ public class ArrayListPlay {
             labels[i].setFont(BIG_FONT);
             panel.add(labels[i]);
         }
-        
+
         frame.getContentPane().add(BorderLayout.CENTER, scrollPane);
-        
-        eraseLabel = new JButton("Erase Label");
-        eraseLabel.addActionListener(new eraseButtonActionListener());
-        
+
+        eraseLabel = new JButton("Save Virgos to File");
+        eraseLabel.addActionListener(new saveButtonActionListener());
+
         frame.getContentPane().add(BorderLayout.SOUTH, eraseLabel);
-        
+
         frame.setSize(500, 800);
         frame.setVisible(true);
     }
 
-    class eraseButtonActionListener implements ActionListener {
+    class saveButtonActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+
+            JFileChooser fileSaver = new JFileChooser();
+            fileSaver.showSaveDialog(frame);
+            saveFile(fileSaver.getSelectedFile());
         }
-        
+
+    }
+
+    private void saveFile(File file) {
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            for (int i = 0; i < PPL_TO_GENERATE; i++) {
+                writer.write(labels[i].getText());
+                writer.write("\n");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("major failure while writing to file");
+        }
+
     }
 }
