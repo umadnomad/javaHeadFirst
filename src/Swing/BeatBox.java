@@ -280,7 +280,10 @@ public class BeatBox {
             }
             
             try {
-                FileOutputStream fileStream = new FileOutputStream(new File("checkbox.ser"));
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.showSaveDialog(frame);
+                
+                FileOutputStream fileStream = new FileOutputStream(fileChooser.getSelectedFile());
                 ObjectOutputStream os = new ObjectOutputStream(fileStream);
                 os.writeObject(checkboxState);
             } catch (IOException ioex) {
@@ -297,7 +300,10 @@ public class BeatBox {
             boolean[] checkboxState = null;
             
             try {
-                FileInputStream fileStream = new FileInputStream(new File("checkbox.ser"));
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.showOpenDialog(frame);
+                
+                FileInputStream fileStream = new FileInputStream(fileChooser.getSelectedFile());
                 ObjectInputStream is = new ObjectInputStream(fileStream);
                 checkboxState = (boolean[]) is.readObject();
                 
