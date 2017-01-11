@@ -7,6 +7,13 @@ package Swing;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.*;
 import java.util.*;
 import javax.sound.midi.*;
@@ -28,15 +35,15 @@ public class BeatBox {
     JFrame frame;
 
     String[] instrumentNames = {"Bass Drum", "Closed Hi-Hat", "Open Hi-Hat",
-                                "Acoustic Snare", "Crash Cymbal", "Hand Clap",
-                                "High Tom", "Hi Bongo", "Maracas", "Whistle",
-                                "Low Conga", "Cowbell", "Vibraslap", "Low-mid Tom",
-                                "High Agogo", "Open Hi Conga"};
+        "Acoustic Snare", "Crash Cymbal", "Hand Clap",
+        "High Tom", "Hi Bongo", "Maracas", "Whistle",
+        "Low Conga", "Cowbell", "Vibraslap", "Low-mid Tom",
+        "High Agogo", "Open Hi Conga"};
 
     int[] instruments = {35, 42, 46, 38, 49, 39, 50, 60, 70, 72, 64, 56, 58, 47, 67, 63};
 
     public static void main(String[] args) {
-        
+
         // aggiungo un commento per mia mamma
         new BeatBox().buildGUI();
     }
@@ -78,6 +85,14 @@ public class BeatBox {
         JButton downTempo = new JButton("Tempo Down");
         downTempo.addActionListener(new MyDownTempoListener());
         buttonBox.add(downTempo);
+
+        JButton serialize = new JButton("Save Pattern");
+        serialize.addActionListener(new MySerializeListener());
+        buttonBox.add(serialize);
+
+        JButton load = new JButton("Load Pattern");
+        load.addActionListener(new MyLoadListener());
+        buttonBox.add(load);
 
         Box nameBox = new Box(BoxLayout.Y_AXIS);
         for (int i = 0; i < 16; i++) {
@@ -251,15 +266,67 @@ public class BeatBox {
 
     } // close inner class
 
-    /**
-     * this makes events for one instrument at a time, for all 16 beats. So it
-     * might get an int[] for the Bass drum, and each index in the array will
-     * hold either the key of that instrument or a zero. If it's a zero, the
-     * instrument isn't supposed to play at that beat. Otherwise, make an event
-     * and add it to the track
-     *
-     * @param list
+    public class MySerializeListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean[] checkboxState = new boolean[256];
+            
+            for (int i = 0; i < 256; i++) {
+                JCheckBox check = checkboxList.get(i);
+                if (check.isSelected()) {
+                    checkboxState[i] = true;
+                }
+            }
+            
+            try {
+                FileOutputStream fileStream = new FileOutputStream(new File("checkbox.ser"));
+                ObjectOutputStream os = new ObjectOutputStream(fileStream);
+                os.writeObject(checkboxState);
+            } catch (IOException ioex) {
+                ioex.printStackTrace();
+            }
+        }
+
+    }
+
+    public class MyLoadListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean[] checkboxState = null;
+            
+            try {
+                FileInputStream fileStream = new FileInputStream(new File("checkbox.ser"));
+                ObjectInputStream is = new ObjectInputStream(fileStream);
+                checkboxState = (boolean[]) is.readObject();
+                
+                for (int i = 0; i < 256; i++) {
+                    JCheckBox check = checkboxList.get(i);
+                    if (checkboxState[i]) {
+                        check.setSelected(true);
+                    } else {
+                        check.setSelected(false);
+                    }
+                }
+                
+            } catch (IOException | ClassNotFoundException ioex) {
+                ioex.printStackTrace();
+            }
+        }
+
+    }
+
+    /*
+             * this makes events for one instrument at a time, for all 16 beats.
+             * So it might get an int[] for the Bass drum, and each index in the
+             * array will hold either the key of that instrument or a zero. If
+             * it's a zero, the instrument isn't supposed to play at that beat.
+             * Otherwise, make an event and add it to the track
+             *
+             * @param list
      */
+
     public void makeTracks(int[] list) {
 
         for (int i = 0; i < 16; i++) {
