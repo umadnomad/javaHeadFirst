@@ -273,7 +273,7 @@ public class BeatBox {
             boolean[] checkboxState = new boolean[256];
             
             for (int i = 0; i < 256; i++) {
-                JCheckBox check = checkboxList.get(i);
+                JCheckBox check = (JCheckBox) checkboxList.get(i);
                 if (check.isSelected()) {
                     checkboxState[i] = true;
                 }
@@ -308,7 +308,7 @@ public class BeatBox {
                 checkboxState = (boolean[]) is.readObject();
                 
                 for (int i = 0; i < 256; i++) {
-                    JCheckBox check = checkboxList.get(i);
+                    JCheckBox check = (JCheckBox) checkboxList.get(i);
                     if (checkboxState[i]) {
                         check.setSelected(true);
                     } else {
