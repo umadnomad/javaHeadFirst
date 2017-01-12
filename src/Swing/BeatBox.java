@@ -22,6 +22,7 @@ import javax.sound.midi.*;
  */
 public class BeatBox {
 
+    private static boolean playAuth = false;
     JPanel mainPanel;
 
     // we store checkboxes in an ArrayList
@@ -121,6 +122,7 @@ public class BeatBox {
             mainPanel.add(c);
         }
 
+        playAuth = true;
         setUpMidi();
 
         frame.setBounds(50, 50, 300, 300);
@@ -227,9 +229,11 @@ public class BeatBox {
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-            
-            sequencer.stop();
-            buildTrackAndStart();
+
+            if (playAuth) {
+                sequencer.stop();
+                buildTrackAndStart();
+            }
         }
 
     }
@@ -332,6 +336,7 @@ public class BeatBox {
                  * Now restore the state of each of the checkboxes in the
                  * ArrayList of actual JCheckBox objects (checkboxList)
                  */
+                playAuth = false;
                 for (int i = 0; i < 256; i++) {
                     JCheckBox check = (JCheckBox) checkboxList.get(i);
                     if (checkboxState[i]) {
@@ -346,6 +351,8 @@ public class BeatBox {
                  * sequence using the new state of the checkboxes in the
                  * ArrayList
                  */
+                
+                playAuth = true;
                 sequencer.stop();
 
             } catch (IOException | ClassNotFoundException ioex) {
