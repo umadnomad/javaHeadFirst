@@ -7,9 +7,7 @@ package Swing;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -118,6 +116,7 @@ public class BeatBox {
         for (int i = 0; i < 256; i++) {
             JCheckBox c = new JCheckBox();
             c.setSelected(false);
+            c.addItemListener(new MyCheckBoxChangeListener());
             checkboxList.add(c);
             mainPanel.add(c);
         }
@@ -224,6 +223,17 @@ public class BeatBox {
         }
     } // close buildTrackAndStart method
 
+    public class MyCheckBoxChangeListener implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            
+            sequencer.stop();
+            buildTrackAndStart();
+        }
+
+    }
+
     public class MyStartListener implements ActionListener {
 
         @Override
@@ -270,19 +280,25 @@ public class BeatBox {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            // Make a boolean array to hold the state of each checkbox
             boolean[] checkboxState = new boolean[256];
-            
+
+            /**
+             * Walk through the checkboxList (ArrayList of checkboxes), and get
+             * the state of each one and add it to the boolean array
+             */
             for (int i = 0; i < 256; i++) {
                 JCheckBox check = (JCheckBox) checkboxList.get(i);
                 if (check.isSelected()) {
                     checkboxState[i] = true;
                 }
             }
-            
+
             try {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.showSaveDialog(frame);
-                
+
                 FileOutputStream fileStream = new FileOutputStream(fileChooser.getSelectedFile());
                 ObjectOutputStream os = new ObjectOutputStream(fileStream);
                 os.writeObject(checkboxState);
@@ -298,15 +314,24 @@ public class BeatBox {
         @Override
         public void actionPerformed(ActionEvent e) {
             boolean[] checkboxState = null;
-            
+
             try {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.showOpenDialog(frame);
-                
+
                 FileInputStream fileStream = new FileInputStream(fileChooser.getSelectedFile());
                 ObjectInputStream is = new ObjectInputStream(fileStream);
+
+                /**
+                 * Read the single object in the file (the boolean array
+                 * (remember, readObject() returns a reference of type Object
+                 */
                 checkboxState = (boolean[]) is.readObject();
-                
+
+                /**
+                 * Now restore the state of each of the checkboxes in the
+                 * ArrayList of actual JCheckBox objects (checkboxList)
+                 */
                 for (int i = 0; i < 256; i++) {
                     JCheckBox check = (JCheckBox) checkboxList.get(i);
                     if (checkboxState[i]) {
@@ -315,7 +340,14 @@ public class BeatBox {
                         check.setSelected(false);
                     }
                 }
-                
+
+                /**
+                 * Now stop whatever is currently playing, and rebuild the
+                 * sequence using the new state of the checkboxes in the
+                 * ArrayList
+                 */
+                sequencer.stop();
+
             } catch (IOException | ClassNotFoundException ioex) {
                 ioex.printStackTrace();
             }
@@ -332,7 +364,6 @@ public class BeatBox {
              *
              * @param list
      */
-
     public void makeTracks(int[] list) {
 
         for (int i = 0; i < 16; i++) {
