@@ -1,15 +1,9 @@
 # umadnomad custom for NetBeans, Java development
 
-# Prevent this file from sinking into oblivion
-!.gitignore
-
-# Ignore all the files
+# Ignore everything
 /*
 
-# Ignore all the directories
-/*/
-
-# With the exception of these
+# With the exception of these folders
 !src/
 !test/
 !nbproject
@@ -18,5 +12,8 @@
 nbproject/*
 nbproject/*/
 
-# Except these files
+# ...Except these files
 !nbproject/project.*
+
+# Lastly, do not ignore this file
+!.gitignore
