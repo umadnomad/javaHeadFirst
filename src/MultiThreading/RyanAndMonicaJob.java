@@ -73,7 +73,7 @@ public class RyanAndMonicaJob implements Runnable {
         }
     }
 
-    private void makeWithdrawal(int amount) {
+    private synchronized void makeWithdrawal(int amount) {
 
         /**
          * check the account balance, and if there's not enough money, we just
