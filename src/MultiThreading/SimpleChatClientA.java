@@ -37,13 +37,18 @@ public class SimpleChatClientA {
 
         setUpNetworking();
 
-        frame.setSize(400, 500);
+        frame.setSize(400, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     } // close go
 
     private void setUpNetworking() {
+
+        /**
+         * this is where we make the Socket and the PrintWriter (it's called
+         * from the go() method right before displaying the app GUI)
+         */
         try {
             sock = new Socket("127.0.0.1", 5000);
             writer = new PrintWriter(sock.getOutputStream());
@@ -57,13 +62,19 @@ public class SimpleChatClientA {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            /**
+             * now we actually do the writing. Remember, the writer is chained
+             * to the output stream from the Socket, so whenever we do a
+             * println(), it goes over the network to the server
+             */
             try {
                 writer.println(outgoing.getText());
                 writer.flush();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            
+
             outgoing.setText("");
             outgoing.requestFocus();
         }
@@ -72,6 +83,7 @@ public class SimpleChatClientA {
 } // close outer class
 
 class SimpleChatClientATestDrive {
+
     public static void main(String[] args) {
         new SimpleChatClientA().go(); // how my god you can do it this way??? A M A Z I N G
     }
