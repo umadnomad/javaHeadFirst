@@ -36,7 +36,7 @@ public class MyRunnable implements Runnable {
  * rolling in a clean, effortless way. this way all the meaningfull methods are
  * isolated in the public class
  */
-class ThreadTestDrive {
+class MyRunnableTestDrive {
 
     public static void main(String[] args) {
         Runnable theJob = new MyRunnable();

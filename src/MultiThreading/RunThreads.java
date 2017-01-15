@@ -21,7 +21,7 @@ public class RunThreads implements Runnable {
     
 }
 
-class TestDrive {
+class RunThreadsTestDrive {
     public static void main(String[] args) {
         
         RunThreads runner = new RunThreads();
