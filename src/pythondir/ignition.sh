@@ -1,2 +1,3 @@
 #!/bin/bash
-python pythontest $1 $2
+
+python pythontest.py $1 $2
