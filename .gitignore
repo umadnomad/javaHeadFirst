@@ -1,19 +1,24 @@
-# umadnomad custom for NetBeans, Java development
+# umadnomad custom for IntelliJ IDEA, Java development
 
 # Ignore everything
 /*
 
 # With the exception of these folders
 !src/
-!test/
-!nbproject
+!.idea/
 
 # ...Inside this last directory, ignore all its files and folders
-nbproject/*
-nbproject/*/
+.idea/*
+.idea/*/
 
-# ...Except these files
-!nbproject/project.*
+# ...Except all the xml files...
+!.idea/*.xml
 
-# Lastly, do not ignore this file
+# ...But not these:
+.idea/tasks.xml
+.idea/workspace.xml
+.idea/dictionaries
+
+# Lastly, do not ignore these files
 !.gitignore
+!*.iml
