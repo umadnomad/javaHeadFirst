@@ -56,7 +56,11 @@ public class BeatBoxFinal {
 
 		/* aggiungo un commento per mia mamma */
         try {
-            new BeatBoxFinal().startUp(args[0]); // args[0] is your user ID/screen name
+
+            /* args[0] is your user ID/screen name. trim() method invocation is necessary as the string parsed from
+             * bash/cmd can be null terminated while afaik java strings are not */
+            new BeatBoxFinal().startUp(args[0].trim());
+
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("you must pass this program an argument in order to get it running");
             System.exit(0);
@@ -347,12 +351,6 @@ public class BeatBoxFinal {
         } catch (IOException | ClassNotFoundException ioex) {
             ioex.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        String string = (String) obj;
-        return super.equals(string.trim());
     }
 
     public class MyCheckBoxChangeListener implements ItemListener {
