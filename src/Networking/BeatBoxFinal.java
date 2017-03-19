@@ -8,6 +8,7 @@ package Networking;
 import javax.sound.midi.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -96,7 +97,9 @@ public class BeatBoxFinal {
 		/* an 'empty border' gives us a margin between the edges of the panel and where the components are placed */
         background.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
+        /* we create an ArrayList which stores the state of the checkboxes */
         checkboxList = new ArrayList<JCheckBox>();
+        /* we create a Box whose content is vertically aligned, it will be used for all our buttons! */
         Box buttonBox = new Box(BoxLayout.Y_AXIS);
 
         JButton start = new JButton("Start");
@@ -127,12 +130,13 @@ public class BeatBoxFinal {
         sendIt.addActionListener(new MySendListener());
         buttonBox.add(sendIt);
 
+        /* a text field where the user can type a message to be shipped together with the pattern over the network */
         userMessage = new JTextField();
         buttonBox.add(userMessage);
 
 		/* JList is a component we haven't used before. This is where the incoming messages are displayed. Only
          * instead of a normal chat where you just LOOK at the messages, in this app you can SELECT a message from the
-		 * list to load and play the attached beat pattern. */
+		 * list to load and play the attached beat pattern */
         incomingList = new JList();
         incomingList.addListSelectionListener(new MyListSelectionListener());
         incomingList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -140,25 +144,28 @@ public class BeatBoxFinal {
         buttonBox.add(theList);
         incomingList.setListData(listVector);
 
+        /* we create a Box whose content is vertically aligned, it will be used to display all the instrument names */
         Box nameBox = new Box(BoxLayout.Y_AXIS);
         for (int i = 0; i < 16; i++) {
             nameBox.add(new Label(instrumentNames[i]));
         }
 
-        background.add(BorderLayout.EAST,buttonBox);
-        background.add(BorderLayout.WEST,nameBox);
+        background.add(BorderLayout.EAST,buttonBox); // buttons to the right
+        background.add(BorderLayout.WEST,nameBox); // instrument names to the left
 
-        theFrame.getContentPane().add(background);
+        theFrame.getContentPane().add(background); // the background to the frame content pane
 
+        /* we make a new GridLayout 16x16 instance and pass it to a new JPanel that will hold the checkboxes */
         GridLayout grid = new GridLayout(16,16);
         grid.setVgap(1);
         grid.setHgap(2);
 
-        mainPanel = new JPanel(grid);
+        mainPanel = new JPanel(grid); // instantiating a new JPanel passing its constructor the GridLayout obj
+        /* append checkboxes' jpanel on the background, which we already appended on the frame content pane */
         background.add(BorderLayout.CENTER,mainPanel);
 
-		/* make the checkboxes, set them to 'false' (so they aren't checked) and add them to the ArrayList AND to the
-         *  GUI panel */
+		/* make the checkboxes, set them to 'false' (so they aren't checked) and add them to both the ArrayList AND
+        the GUI panel */
         for (int i = 0; i < 256; i++) {
             JCheckBox c = new JCheckBox();
             c.setSelected(false);
@@ -244,11 +251,9 @@ public class BeatBoxFinal {
         }
     } // close buildTrackAndStart method
 
-    /*
-     * this makes events for one instrument at a time, for all 16 beats. So it might get an int[] for the Bass drum,
+    /* this makes events for one instrument at a time, for all 16 beats. So it might get an int[] for the Bass drum,
      * and each index in the array will hold either the key of that instrument or a zero. If it's a zero, the
-     * instrument isn't supposed to play at that beat. Otherwise, make an event and add it to the track
-     */
+     * instrument isn't supposed to play at that beat. Otherwise, make an event and add it to the track */
     public void makeTracks(ArrayList list) {
         Iterator it = list.iterator();
         for (int i = 0; i < 16; i++) {
@@ -264,7 +269,8 @@ public class BeatBoxFinal {
         } // close loop
     } // close makeTracks()
 
-    // this is the utility method from last chapter's CodeKitchen. nothing new
+    /* this is the utility method from last chapter's CodeKitchen. nothing new. It's our custom method specialized in
+     * an easier generation of MidiEvent objects */
     public MidiEvent makeEvent(int comd,int chan,int one,int two,int tick) {
         MidiEvent event = null;
         try {
@@ -278,6 +284,8 @@ public class BeatBoxFinal {
         return event;
     }
 
+    /* This method is called when the user selects something from the list. We IMMEDIATLY change the pattern to the
+     * one they selected */
     public void changeSequence(boolean[] checkboxState) {
 
         for (int i = 0; i < 256; i++) {
@@ -384,10 +392,8 @@ public class BeatBoxFinal {
 
     } // close inner class
 
-    /*
-     * the tempo factor scales the sequencer's tempo by the factor provided. The default is 1.0, so we're adjusting +/-
-     * 3% per click
-     */
+    /* the tempo factor scales the sequencer's tempo by the factor provided. The default is 1.0, so we're adjusting +/-
+     * 3% per click */
     public class MyUpTempoListener implements ActionListener {
 
         @Override
@@ -437,9 +443,15 @@ public class BeatBoxFinal {
                     checkboxState[i] = true;
                 }
             } // close loop
+
+            /* This is new... it's a lot like the SimpleChatClient, except instead of sending a String message, we
+             * serialize two objects (the String message and the beat pattern) and write those two objects to the
+             * socket output stream (to the server) */
             String messageToSend = null;
             try {
+                /* 1st object being sent out: a String with the user message and name */
                 out.writeObject(userName + " [" + nextNum++ + "]: " + userMessage.getText());
+                /* 2nd object being sent out: checkboxState boolean[] array */
                 out.writeObject(checkboxState);
             } catch (IOException e1) {
                 System.out.println("Sorry dude. Could not send it to the server.");
@@ -448,10 +460,14 @@ public class BeatBoxFinal {
         } // close actionPerformed
     } // close inner class
 
-    public class MyListSelectionListener implements javax.swing.event.ListSelectionListener {
+    public class MyListSelectionListener implements ListSelectionListener {
 
         @Override
         public void valueChanged(ListSelectionEvent e) {
+            /* This is also new -- a ListSelectionListener that tells us when the user made a selection on the list
+             * of messages. When the users selects a message, we IMMEDIATLY load the associated beat pattern (it's in
+             * the HashMap called otherSeqsMap) and start playing it. There are some if tests because of little quirtky
+             * things about getting ListSelectionEvents */
             if (!e.getValueIsAdjusting()) {
                 String selected = (String) incomingList.getSelectedValue();
                 if (selected != null) {
@@ -474,6 +490,8 @@ public class BeatBoxFinal {
 
     public class RemoteReader implements Runnable {
 
+        /* This is the thread job -- read in data from the server. In this code, 'data' will always be two serialized
+         * objects: the String message and the beat pattern (an ArrayList of checkbox state values) */
         boolean[] checkboxState = null;
         String    nameToShow    = null;
         Object    obj           = null;
@@ -481,14 +499,28 @@ public class BeatBoxFinal {
         @Override
         public void run() {
             try {
+
                 while ((obj = in.readObject()) != null) {
+
+                    /* When a message comes in, we read (deserialize) the two objects (the message and the ArrayList of
+                     * Boolean checkbox state values) and add it to the JList component. */
                     System.out.println("got an object from server");
                     System.out.println(obj.getClass());
+
+                    /* 1st object arriving: cast it to (String) to parse sender's userName */
                     String nameToShow = (String) obj;
+                    /* 2nd object arriving: its our boolean[] array containing the checkbox state. Remember that
+                    readObject() method returns type Object objects, so we need to cast it back to what it was: said
+                    boolean[] array */
                     checkboxState = (boolean[]) in.readObject();
+
+                    /* Adding to a JList is a two-step
+                     * thing: you keep a Vector of the lists data (Vector is an old-fashioned, synchronized ArrayList),
+                     * and then tell the JList to use that Vector as it's source for what to display in the list */
                     otherSeqsMap.put(nameToShow,checkboxState);
                     listVector.add(nameToShow);
                     incomingList.setListData(listVector);
+
                 } // close while
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
