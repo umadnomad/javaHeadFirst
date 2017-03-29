@@ -10,6 +10,21 @@ to the version control system. nbproject contains project metadata that enables
 others users to open the project in NetBeans without having to import the projec
 t first.
 --------------------------------------------------------------------------------
+IntelliJ IDEA Version Control Considerations
+to-do
+--------------------------------------------------------------------------------
+Create a new repository on the command line
+$ echo "# PROJECT_NAME" >> README.md
+$ git init
+$ git add README.md
+$ git commit -m "Initial commit"
+$ git remote add origin https://github.com/umadnomad/PROJECT_NAME.git
+$ git push -u origin master
+--------------------------------------------------------------------------------
+Push an existing repository from the command line
+$ git remote add origin https://github.com/umadnomad/1Z0-851.git
+$ git push -u origin master
+--------------------------------------------------------------------------------
 If pushing to git asks for username and password, your origin remote is pointing
  at the https url rather than the ssh url.
 $ git remote set-url origin git@github.com:username/project.git
