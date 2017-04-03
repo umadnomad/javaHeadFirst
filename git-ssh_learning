@@ -25,10 +25,6 @@ Push an existing repository from the command line
 $ git remote add origin https://github.com/umadnomad/1Z0-851.git
 $ git push -u origin master
 --------------------------------------------------------------------------------
-If pushing to git asks for username and password, your origin remote is pointing
- at the https url rather than the ssh url.
-$ git remote set-url origin git@github.com:username/project.git
---------------------------------------------------------------------------------
 Setting your branch to exactly match the remote branch can be done in two steps
 $ git fetch origin
 $ git reset --hardd origin/branch_to_be_matched
@@ -120,14 +116,22 @@ END OF GIT README
 START OF SSH README
 --------------------------------------------------------------------------------
 Checking for existing SSH keys
-$ ls -al ~/.ssh
+$ ls -la ~/.ssh
 --------------------------------------------------------------------------------
 Generating a new SSH key
-$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+Option -t stands for type, -b bit number, -C is a comment
+$ ssh-keygen -t rsa -b 4096 -C "comment_email_or_reminder"
 --------------------------------------------------------------------------------
 Copy the SSH key to your clipboard.
 $ sudo apt-get install xclip
 $ xclip -sel clip < ~/.ssh/id_rsa.pub
+--------------------------------------------------------------------------------
+If pushing to git asks for username and password, your origin remote is pointing
+ at the https url rather than the ssh url.
+$ git remote set-url origin git@github.com:username/project.git
+--------------------------------------------------------------------------------
+If you are unsure which url remote is pointing at, use the command
+$ git remote get-url origin
 --------------------------------------------------------------------------------
 Use this command to remove entries from known_hosts
 $ ssh-keygen -R hostname
