@@ -13,6 +13,17 @@ t first.
 IntelliJ IDEA Version Control Considerations
 to-do
 --------------------------------------------------------------------------------
+Git can push all branches or a single one dependent on this configuration:
+
+Push all branches
+$ git config --global push.default matching
+
+It will push all the branches to the remote branch and would merge them. If you 
+don't want to push all branches, you can push the current branch only.
+
+Push only the current branch
+git config --global push.default simple
+--------------------------------------------------------------------------------
 Create a new repository on the command line
 $ echo "# PROJECT_NAME" >> README.md
 $ git init
